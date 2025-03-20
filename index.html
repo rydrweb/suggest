@@ -1,157 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Name Hub</title>
+    <title>rydrweb</title>
     <style>
-        body {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #121212;
+            color: white;
+        }
+
+        body {
+            justify-content: center;
             text-align: center;
-            background-color: #0a0a0a;
-            color: #bbfeb1;
-            padding: 20px;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            --s: 37px;
+            /* control the size */
+
+            --c: #0000, #282828 0.5deg 119.5deg, #0000 120deg;
+            --g1: conic-gradient(from 60deg at 56.25% calc(425% / 6), var(--c));
+            --g2: conic-gradient(from 180deg at 43.75% calc(425% / 6), var(--c));
+            --g3: conic-gradient(from -60deg at 50% calc(175% / 12), var(--c));
+            background: var(--g1), var(--g1) var(--s) calc(1.73 * var(--s)), var(--g2),
+                var(--g2) var(--s) calc(1.73 * var(--s)), var(--g3) var(--s) 0,
+                var(--g3) 0 calc(1.73 * var(--s)) #1e1e1e;
+            background-size: calc(2 * var(--s)) calc(3.46 * var(--s));
         }
+
         h1 {
+            margin-bottom: 20px;
             font-size: 2rem;
-            text-shadow: 0px 0px 10px #bbfeb1;
+            margin-top: 100px;
         }
-        #gameInput {
-            width: 60%;
-            padding: 10px;
-            font-size: 16px;
+
+        a {
+            padding: 0.8em 2em 0.8em 2.5em;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 15px;
+            color: #f6fff6;
+            letter-spacing: 0.3em;
+            text-shadow: -2px 2px 5px #33fd30;
+            background-color: transparent;
             border: 2px solid #bbfeb1;
-            background: black;
-            color: #bbfeb1;
-            outline: none;
-            border-radius: 5px;
+            box-shadow: 0 0 0px 1px #42f112,
+                0 0 10px 2px #33fd30,
+                inset 0 0 0px 1px #42f112,
+                inset 0 0 10px 2px #33fd30;
+            transition: 100ms;
         }
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            background: #bbfeb1;
-            color: black;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: 0.3s ease;
-            margin-left: 5px;
+
+        a:hover {
+            box-shadow: 0 0 0px 1px #42f112,
+                0 0 10px 2px #33fd30,
+                inset 0 0 0px 1px #42f112,
+                inset 0 0 30px 2px #33fd30;
+            text-shadow: 0 0 10px #33fd30;
+            transform: translateY(-5px);
         }
-        button:hover {
-            background: #8df37d;
-            box-shadow: 0px 0px 10px #bbfeb1;
-        }
-        .game-post {
-            background: #111;
-            padding: 15px;
-            margin: 10px auto;
-            width: 60%;
-            border-radius: 8px;
+
+        .content {
+            margin-top: 10px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0px 0px 15px #8df37d;
-            transition: 0.3s ease;
+            margin-left: 15px;
+            margin-top: 20px;
         }
-        .game-post:hover {
-            box-shadow: 0px 0px 20px #bbfeb1;
-        }
-        .votes {
-            display: flex;
-            align-items: center;
-        }
-        .vote-btn {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: #c0ff00;
-            transition: 0.2s ease;
-        }
-        .vote-btn:hover {
-            transform: scale(1.2);
-            color: #a0dd00;
-        }
-        .delete-btn {
-            color: red;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 18px;
-            transition: 0.2s ease;
-        }
-        .delete-btn:hover {
-            transform: scale(1.2);
-            color: #ff5555;
+
+        .content a {
+            margin: 5px;
         }
     </style>
 </head>
+
 <body>
-
-    <h1>Suggest A Game</h1>
-    <input type="text" id="gameInput" placeholder="Enter a game name...">
-    <button onclick="postGame()">Post</button>
-
-    <div id="gameList"></div>
-
-    <script>
-        function postGame() {
-            let input = document.getElementById("gameInput").value.trim();
-            if (input === "") return;
-            
-            let gameList = document.getElementById("gameList");
-
-            let postDiv = document.createElement("div");
-            postDiv.classList.add("game-post");
-
-            let nameSpan = document.createElement("span");
-            nameSpan.textContent = input;
-
-            let votesDiv = document.createElement("div");
-            votesDiv.classList.add("votes");
-
-            let upvoteBtn = document.createElement("button");
-            upvoteBtn.innerHTML = "👍";
-            upvoteBtn.classList.add("vote-btn");
-            upvoteBtn.onclick = function () {
-                let count = upvoteBtn.nextElementSibling;
-                count.textContent = parseInt(count.textContent) + 1;
-            };
-
-            let voteCount = document.createElement("span");
-            voteCount.textContent = "0";
-            voteCount.style.margin = "0 10px";
-            voteCount.style.fontSize = "18px";
-
-            let downvoteBtn = document.createElement("button");
-            downvoteBtn.innerHTML = "👎";
-            downvoteBtn.classList.add("vote-btn");
-            downvoteBtn.onclick = function () {
-                let count = downvoteBtn.previousElementSibling;
-                count.textContent = parseInt(count.textContent) - 1;
-            };
-
-            let deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "❌";
-            deleteBtn.classList.add("delete-btn");
-            deleteBtn.onclick = function () {
-                gameList.removeChild(postDiv);
-            };
-
-            votesDiv.appendChild(upvoteBtn);
-            votesDiv.appendChild(voteCount);
-            votesDiv.appendChild(downvoteBtn);
-
-            postDiv.appendChild(nameSpan);
-            postDiv.appendChild(votesDiv);
-            postDiv.appendChild(deleteBtn);
-
-            gameList.insertBefore(postDiv, gameList.firstChild);
-            document.getElementById("gameInput").value = "";
-        }
-    </script>
-
+    <div>
+        <h1 style="margin-bottom: 25px;">Suggest</h1>
+        <a href="https://rydrweb.github.io" style="margin-top: 25px;">Back</a>
+        <div class="content">
+            <p style="margin-top: 25px;">I dont have an email for rydrweb right now</p>
+        </div>
+    </div>
 </body>
+
 </html>
